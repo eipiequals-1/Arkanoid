@@ -1,11 +1,15 @@
-import pygame, random
-from .constants import B_RECT, HEIGHT, F_GREEN
+import random
+
+import pygame
+
+from .constants import B_RECT, F_GREEN, HEIGHT
 
 
 class Ball:
     """
     The ball object checks for collisions with the walls and takes away lives accordingly.
-    It moves based off of constant velocities."""
+    It moves based off of constant velocities.
+    """
     def __init__(self, x, y, w, h):
         self.reset(x, y, w, h)
         self.color = (200, 200, 200)

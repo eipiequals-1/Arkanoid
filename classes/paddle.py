@@ -1,6 +1,6 @@
 import pygame
-from .constants import WIDTH, HEIGHT, B_RECT, PADDLE
 
+from .constants import B_RECT, HEIGHT, PADDLE, WIDTH
 
 class Paddle:
     def __init__(self):
@@ -12,8 +12,7 @@ class Paddle:
     def update(self, surface, ball, pos):
         self.draw(surface)
         self.useMouse(pos)  
-        self.getHit(ball)
-
+        self.get_hit(ball)
 
     def useMouse(self, pos):
         if self.rect.left >= B_RECT.left and self.rect.right <= B_RECT.right:
@@ -23,16 +22,14 @@ class Paddle:
         elif self.rect.right > B_RECT.right:
             self.rect.right = B_RECT.right
         
-    def getHit(self, ball):
+    def get_hit(self, ball):
         diff = ball.rect.centerx - self.rect.centerx
         collisionTolerance = 10
         if self.rect.colliderect(ball.rect):
             if abs(ball.rect.bottom - self.rect.top) < collisionTolerance and ball.vely > 0:
                 ball.vely *= -1
-                ball.velx = diff//4
+                ball.velx = diff // 4
 
     def reset(self):
-        self.rect = PADDLE.get_rect(center=(WIDTH//2, HEIGHT*9//10))
+        self.rect = PADDLE.get_rect(center=(WIDTH // 2, HEIGHT * 9 // 10))
         self.vel = 0
-
-        

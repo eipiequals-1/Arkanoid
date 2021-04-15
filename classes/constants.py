@@ -16,7 +16,6 @@ PADDLE = pygame.transform.scale(pygame.image.load("Assets/platform.png").convert
 ARKANOID = pygame.transform.scale(pygame.image.load("Assets/arkanoid_text.png").convert_alpha(), (400, 120))
 ARKANOID2 = pygame.transform.scale(pygame.image.load("Assets/arkanoid_text.png").convert_alpha(), (640, 200))
 
-
 B = []
 for i in range(5):
     B.append(pygame.transform.scale(pygame.image.load("Assets/b" + str(i) + ".png").convert_alpha(), (900, 960)))
@@ -25,27 +24,25 @@ B_RECT = pygame.Rect((WIDTH//2 - B[0].get_width()//2) + BAR_WIDTH,
                     B[0].get_width() - BAR_WIDTH*2,
                     B[0].get_height())
 
-# IMPORTANT BRICK VALUES
-CELL_W = B_RECT.width//COLS
+# IMPORTANT BRICK CONSTANTS
+CELL_W = B_RECT.width // COLS
 CELL_H = 30
-START_X = B_RECT.left + (B_RECT.width % COLS)//2
+START_X = B_RECT.left + (B_RECT.width % COLS) // 2
 START_Y = B_RECT.top + 100
 
-
 # COLORS
-#         R     G     B
-RED =     (200, 0,    0)
-GREEN =   (0,  200,   0)
-L_BLUE =  (0,  231,  249)
-F_GREEN = (33, 125,  117)
-B_COL =   (0,  104,  214)
-BLACK =   (0,   7,    7)
-WHITE =   (255, 255, 255)
-BLUE =    (0,   100, 214)
-TAN =     (254, 250, 205)
-ORANGE =  (255, 128,  0)
-COLORS = {'R':RED, 'G':GREEN, 'L':L_BLUE, 'T':TAN, 'F':F_GREEN, 'O':ORANGE, 'W':WHITE, 'B':BLUE}
-POINTS = {RED:90, GREEN:100, L_BLUE:105, TAN:210, F_GREEN:230, ORANGE:240, WHITE: 150, BLUE: 120}
+RED = (200, 0, 0)
+GREEN = (0, 200, 0)
+L_BLUE = (0, 231, 249)
+F_GREEN = (33, 125, 117)
+B_COL = (0, 104, 214)
+BLACK = (0, 7, 7)
+WHITE = (255, 255, 255)
+BLUE = (0, 100, 214)
+TAN = (254, 250, 205)
+ORANGE = (255, 128, 0)
+COLORS = {'R': RED, 'G': GREEN, 'L': L_BLUE, 'T': TAN, 'F': F_GREEN, 'O': ORANGE, 'W': WHITE, 'B': BLUE}
+POINTS = {RED: 90, GREEN: 100, L_BLUE: 105, TAN: 210, F_GREEN: 230, ORANGE: 240, WHITE: 150, BLUE: 120}
 
 LEVELS = [
     # Level 1
@@ -172,6 +169,4 @@ LEVELS = [
      "      WORGL",
      "        RGL",
      "          L"]
-
-    
 ]

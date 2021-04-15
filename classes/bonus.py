@@ -1,6 +1,8 @@
-import pygame, random
-from .constants import WIDTH, HEIGHT, WHITE, B_RECT, RED, ORANGE
+import random
 
+import pygame
+
+from .constants import B_RECT, HEIGHT, ORANGE, RED, WHITE, WIDTH
 
 class Bonus:
     WIDTH = 32

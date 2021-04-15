@@ -1,10 +1,13 @@
-import pygame, sys
-from .constants import *
+import sys
+
+import pygame
+
 from .ball import Ball
+from .bonus import AllBonuses
+from .constants import *
+from .GUI import Button, HighScore, displayText
 from .level import Level
 from .paddle import Paddle
-from .GUI import HighScore, Button, displayText
-from .bonus import AllBonuses
 
 pygame.init()
 #music = pygame.mixer.music.load("Assets/")
@@ -20,14 +23,13 @@ class Game:
         self.state = "menu"
         self.levelNum = 1
         self.paddle = Paddle()
-        self.ball = Ball(WIDTH//2 - 25//2, self.paddle.rect.top - 25, 25, 25)
+        self.ball = Ball(WIDTH // 2 - 25 // 2, self.paddle.rect.top - 25, 25, 25)
         self.level = Level(self.levelNum)
         self.score = 0
         self.lives = 15
         self.createButtons()
         self.highScore = HighScore()
         self.allBonuses = AllBonuses()
-        
 
     def run(self):
         # game while loop
@@ -36,7 +38,6 @@ class Game:
             self.events()      
             pygame.display.update()
             CLOCK.tick(60)
-
             
     def update(self):
         # Checks for collisions, points, wins, and losses
@@ -47,11 +48,11 @@ class Game:
 
             pos = pygame.mouse.get_pos()
             SCREEN.fill(BLACK)
-            SCREEN.blit(ARKANOID, (WIDTH//2 - ARKANOID.get_width()//2, B_RECT.top//3 - ARKANOID.get_height()//2))
-            SCREEN.blit(B[(self.levelNum - 1)//2], (B_RECT.x - BAR_WIDTH, B_RECT.y - BAR_WIDTH))
+            SCREEN.blit(ARKANOID, (WIDTH // 2 - ARKANOID.get_width() // 2, B_RECT.top // 3 - ARKANOID.get_height() // 2))
+            SCREEN.blit(B[(self.levelNum - 1) // 2], (B_RECT.x - BAR_WIDTH, B_RECT.y - BAR_WIDTH))
             self.leave.draw(SCREEN, 25)
             self.allBonuses.update(SCREEN, self.ball, self, self.levelNum)
-            self.ball.update(SCREEN, WIDTH//2 - 25//2, self.paddle.rect.top - 25, 25, 25, self)
+            self.ball.update(SCREEN, WIDTH // 2 - 25 // 2, self.paddle.rect.top - 25, 25, 25, self)
             self.level.update(SCREEN, self.ball, self, self.highScore)
             self.paddle.update(SCREEN, self.ball, pos)
             if win:
@@ -62,10 +63,8 @@ class Game:
                 self.state = "lose"
                 self.lives = 15
 
-
         self.menuUpdate()
         self.extrasUpdate()
-
   
     def events(self):
         for event in pygame.event.get():
@@ -98,7 +97,11 @@ class Game:
 
                 elif self.state.__eq__("win"): ############### WIN #############
                     if self.nextLevel.isOver(pos):
-                        self.resetLevel()
+                        if self.levelNum == 10:
+                            self.resetLevel(1)
+                        else:
+                            self.resetLevel()
+
                         self.state = "playing"
 
                 elif self.state.__eq__("select"): ############ SELECT ##########
@@ -119,8 +122,6 @@ class Game:
                     self.resetLevel(1)
                     self.state = "menu"
                     self.score = 0
-  
-
                     
     def resetLevel(self, chosenLevel=None):
         if chosenLevel is None:
@@ -128,16 +129,15 @@ class Game:
             self.level.bricks.clear()
             self.level.initialize(self.levelNum)
             self.highScore.write(str(self.score))
-            self.ball.reset(WIDTH//2 - 25//2, self.paddle.rect.top - 25, 25, 25)
+            self.ball.reset(WIDTH // 2 - 25 // 2, self.paddle.rect.top - 25, 25, 25)
             self.paddle.reset()
         else:
             self.levelNum = chosenLevel
             self.level.bricks.clear()
             self.level.initialize(self.levelNum)
             self.highScore.write(str(self.score))
-            self.ball.reset(WIDTH//2 - 25//2, self.paddle.rect.top - 25, 25, 25)
+            self.ball.reset(WIDTH // 2 - 25 // 2, self.paddle.rect.top - 25, 25, 25)
             self.paddle.reset()
-
 
     def createButtons(self):
         self.start = Button(BLACK, WIDTH // 2 - 50, HEIGHT * 3 // 5, 100, 50, "Start")
@@ -166,24 +166,23 @@ class Game:
             self.credits.draw(SCREEN, 30)
             self.select.draw(SCREEN, 25)
             self.settings.draw(SCREEN, 25)
-            SCREEN.blit(ARKANOID2, (WIDTH//2 - ARKANOID2.get_width()//2, HEIGHT//10))
+            SCREEN.blit(ARKANOID2, (WIDTH // 2 - ARKANOID2.get_width() // 2, HEIGHT // 10))
             
     def extrasUpdate(self):
         ################################### OVER ##############################        
         if self.state.__eq__("win"):
             SCREEN.fill(BLACK)
-            displayText(SCREEN, WIDTH//2, HEIGHT//2 - 17, "You Win!")
+            displayText(SCREEN, WIDTH // 2, HEIGHT // 2 - 17, "You Win!")
             self.leave.draw(SCREEN, 25)
             #These are the buttons to control levels
             self.nextLevel.draw(SCREEN, 35)
                 
         elif self.state.__eq__("lose"):
             SCREEN.fill(BLACK)
-            displayText(SCREEN, WIDTH//2, HEIGHT//2 - 17, "You Lose!")
+            displayText(SCREEN, WIDTH // 2, HEIGHT // 2 - 17, "You Lose!")
             self.leave.draw(SCREEN, 25)
 
         ################################# CREDITS ##############################
-            
         elif self.state.__eq__("credits"):
             SCREEN.fill(BLACK)
             displayText(SCREEN, WIDTH // 7, HEIGHT * 11 // 25, "Python 3.8.5", "uroob", 30, WHITE, False)
@@ -198,10 +197,9 @@ class Game:
             self.leave.draw(SCREEN, 25)
 
         ################################ SELECT ################################
-
         elif self.state.__eq__("select"):
             SCREEN.fill(BLACK)
-            displayText(SCREEN, WIDTH//2, HEIGHT*1//10, "Select A Level", "uroob", 30, BLUE)
+            displayText(SCREEN, WIDTH // 2, HEIGHT * 1 // 10, "Select A Level", "uroob", 30, BLUE)
             self.leave.draw(SCREEN, 25)
             for button in self.levels:
                 button.draw(SCREEN, 35)
@@ -213,4 +211,3 @@ class Game:
             
         for x in range(20):
             pygame.draw.line(SCREEN, (128, 128, 128), (B_RECT.left, START_Y + CELL_H * x), (B_RECT.right, START_Y + CELL_H * x))
-
